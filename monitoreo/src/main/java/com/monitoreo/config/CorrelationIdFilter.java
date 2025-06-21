@@ -19,6 +19,7 @@ import java.util.UUID;
 public class CorrelationIdFilter extends OncePerRequestFilter {
 
     public static final String CORRELATION_ID_HEADER = "X-Correlation-ID";
+    public static final String REQUEST_ID_HEADER = "X-Request-ID";
     public static final String CORRELATION_ID_MDC_KEY = "correlationId";
     public static final String REQUEST_ID_MDC_KEY = "requestId";
     public static final String USER_ID_MDC_KEY = "userId";
@@ -93,7 +94,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
      * Extrae el request-id del header o genera uno nuevo
      */
     private String extractRequestId(HttpServletRequest request) {
-        String requestId = request.getHeader("X-Request-ID");
+        String requestId = request.getHeader(REQUEST_ID_HEADER);
         
         if (requestId == null || requestId.trim().isEmpty()) {
             requestId = "req-" + UUID.randomUUID().toString().replace("-", "").substring(0, 12);

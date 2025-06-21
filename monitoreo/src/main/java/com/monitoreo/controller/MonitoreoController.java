@@ -95,7 +95,7 @@ public class MonitoreoController {
     /**
      * Obtiene todos los eventos con paginación
      */
-    @GetMapping("/eventos")
+    @GetMapping("/eventos-basicos")
     public ResponseEntity<Page<EventoMonitoreo>> obtenerEventos(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {

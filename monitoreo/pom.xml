@@ -77,6 +77,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
 			<version>7.4</version>
@@ -94,6 +99,35 @@
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
 						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>com/monitoreo/config/**/*.class</exclude>
+						<exclude>com/monitoreo/MonitoreoApplication.class</exclude>
+						<exclude>com/monitoreo/dto/**/*.class</exclude>
+						<exclude>com/monitoreo/exception/EventoNotFoundException.class</exclude>
+						<exclude>com/monitoreo/exception/InvalidEventoException.class</exclude>
+						<exclude>com/monitoreo/exception/MonitoreoException.class</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
