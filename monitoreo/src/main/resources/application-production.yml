@@ -1,0 +1,115 @@
+spring:
+  application:
+    name: monitoreo-production
+
+# Configuración de la base de datos PostgreSQL para producción
+datasource:
+  url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:monitoreo_production_db}
+  username: ${DB_USERNAME:postgres}
+  password: ${DB_PASSWORD:postgres}
+  driver-class-name: org.postgresql.Driver
+  hikari:
+    maximum-pool-size: 20
+    minimum-idle: 5
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+
+# Configuración de JPA/Hibernate para producción
+jpa:
+  hibernate:
+    ddl-auto: validate  # Solo validar esquema en producción
+  show-sql: false       # No mostrar SQL en producción
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: false
+      jdbc:
+        batch_size: 50
+      order_inserts: true
+      order_updates: true
+      connection:
+        provider_disables_autocommit: true
+  open-in-view: false
+
+# Configuración de Actuator para producción
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: never  # No mostrar detalles en producción
+      show-components: never
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
+      environment: production
+      version: ${app.version:1.0.0}
+      region: ${REGION:us-east-1}
+  info:
+    env:
+      enabled: false  # No exponer variables de entorno en producción
+    git:
+      mode: full
+    build:
+      enabled: true
+
+# Configuración de logging para producción
+logging:
+  level:
+    com.monitoreo: WARN
+    org.springframework.boot.actuate: ERROR
+    org.springframework.security: ERROR
+    org.hibernate.SQL: ERROR
+    org.hibernate.type.descriptor.sql.BasicBinder: ERROR
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/monitoreo-production.log
+    max-size: 200MB
+    max-history: 60
+  logback:
+    rollingpolicy:
+      total-size-cap: 10GB
+
+# Configuración del servidor para producción
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    max-connections: 8192
+    accept-count: 100
+
+# Configuración de seguridad para producción
+spring:
+  security:
+    user:
+      name: ${PROD_USER:admin}
+      password: ${PROD_PASSWORD:admin123}
+    basic:
+      enabled: true
+
+# Configuración de caché para producción
+spring:
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=600s 

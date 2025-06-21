@@ -1,0 +1,16 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'email-notifications'
+
+receivers:
+  - name: 'email-notifications'
+    email_configs:
+      - to: 'tu-correo@gmail.com'                    # <--- Cambia por tu correo Gmail de destino
+        from: 'tu-correo@gmail.com'                  # <--- Cambia por tu correo Gmail remitente
+        smarthost: 'smtp.gmail.com:587'              # Servidor SMTP de Gmail
+        auth_username: 'tu-correo@gmail.com'         # <--- Cambia por tu correo Gmail
+        auth_password: 'TU_CONTRASEÑA_DE_APLICACION' # <--- Cambia por tu contraseña de aplicación
+        send_resolved: true
+        require_tls: true 

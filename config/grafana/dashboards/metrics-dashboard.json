@@ -1,0 +1,193 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Métricas del Microservicio de Monitoreo",
+    "tags": ["monitoreo", "metrics", "prometheus"],
+    "style": "dark",
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Eventos de Monitoreo",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "monitoreo_eventos_creados_total",
+            "legendFormat": "Eventos Creados"
+          },
+          {
+            "expr": "monitoreo_eventos_consultados_total",
+            "legendFormat": "Eventos Consultados"
+          },
+          {
+            "expr": "monitoreo_eventos_eliminados_total",
+            "legendFormat": "Eventos Eliminados"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "displayMode": "list"
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "id": 2,
+        "title": "Errores del Sistema",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "monitoreo_errores_validacion_total",
+            "legendFormat": "Errores de Validación"
+          },
+          {
+            "expr": "monitoreo_errores_basedatos_total",
+            "legendFormat": "Errores de BD"
+          },
+          {
+            "expr": "monitoreo_errores_sistema_total",
+            "legendFormat": "Errores del Sistema"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "red", "value": 1}
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        }
+      },
+      {
+        "id": 3,
+        "title": "Latencia de Operaciones",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(monitoreo_eventos_creacion_tiempo_seconds_sum[5m]) / rate(monitoreo_eventos_creacion_tiempo_seconds_count[5m])",
+            "legendFormat": "Creación de Eventos"
+          },
+          {
+            "expr": "rate(monitoreo_eventos_consulta_tiempo_seconds_sum[5m]) / rate(monitoreo_eventos_consulta_tiempo_seconds_count[5m])",
+            "legendFormat": "Consulta de Eventos"
+          }
+        ],
+        "yAxes": [
+          {
+            "label": "Tiempo (segundos)",
+            "unit": "s"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        }
+      },
+      {
+        "id": 4,
+        "title": "Logs por Nivel",
+        "type": "piechart",
+        "targets": [
+          {
+            "expr": "monitoreo_logs_nivel_total",
+            "legendFormat": "{{level}}"
+          }
+        ],
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        }
+      },
+      {
+        "id": 5,
+        "title": "Datos Sensibles",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "monitoreo_datos_sensibles_detectados_total",
+            "legendFormat": "Datos Sensibles Detectados"
+          },
+          {
+            "expr": "monitoreo_datos_sensibles_enmascarados_total",
+            "legendFormat": "Datos Enmascarados"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        }
+      },
+      {
+        "id": 6,
+        "title": "Estado del Sistema",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "monitoreo_eventos_activos",
+            "legendFormat": "Eventos Activos"
+          },
+          {
+            "expr": "monitoreo_sesiones_activas",
+            "legendFormat": "Sesiones Activas"
+          },
+          {
+            "expr": "monitoreo_eventos_errores_acumulados",
+            "legendFormat": "Errores Acumulados"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            }
+          }
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 24
+        }
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "30s"
+  }
+} 

@@ -1,0 +1,47 @@
+apiVersion: 1
+
+users:
+  - name: admin
+    email: admin@monitoreo.com
+    login: admin
+    password: admin
+    isAdmin: true
+
+  - name: developer
+    email: developer@monitoreo.com
+    login: developer
+    password: dev123
+    isAdmin: false
+
+  - name: viewer
+    email: viewer@monitoreo.com
+    login: viewer
+    password: view123
+    isAdmin: false
+
+teams:
+  - name: Administrators
+    email: admins@monitoreo.com
+    members:
+      - admin@monitoreo.com
+
+  - name: Developers
+    email: developers@monitoreo.com
+    members:
+      - developer@monitoreo.com
+
+  - name: Viewers
+    email: viewers@monitoreo.com
+    members:
+      - viewer@monitoreo.com
+
+orgs:
+  - name: Monitoreo
+    id: 1
+    users:
+      - name: admin
+        role: Admin
+      - name: developer
+        role: Editor
+      - name: viewer
+        role: Viewer 

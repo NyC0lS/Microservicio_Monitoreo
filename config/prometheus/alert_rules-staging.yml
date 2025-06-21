@@ -1,0 +1,32 @@
+groups:
+  - name: monitoreo_staging_alerts
+    rules:
+      - alert: ServicioCaidoStaging
+        expr: up{job="monitoreo-staging"} == 0
+        for: 2m  # Más tiempo de tolerancia en staging
+        labels:
+          severity: critical
+          environment: staging
+        annotations:
+          summary: "El microservicio de monitoreo en staging está caído"
+          description: "No se detecta el servicio en el endpoint /actuator/health"
+
+      - alert: Errores5xxElevadosStaging
+        expr: rate(http_server_requests_seconds_count{outcome="SERVER_ERROR",job="monitoreo-staging"}[1m]) > 10  # Umbral más alto en staging
+        for: 3m  # Más tiempo de tolerancia
+        labels:
+          severity: warning
+          environment: staging
+        annotations:
+          summary: "Errores 5xx elevados en staging"
+          description: "Se detectan más de 10 errores 5xx por minuto en el microservicio de monitoreo en staging"
+
+      - alert: LatenciaElevadaStaging
+        expr: histogram_quantile(0.95, sum(rate(monitoreo_eventos_creacion_tiempo_seconds_bucket{job="monitoreo-staging"}[5m])) by (le)) > 0.5  # Umbral más alto en staging
+        for: 3m
+        labels:
+          severity: warning
+          environment: staging
+        annotations:
+          summary: "Latencia elevada en creación de eventos en staging"
+          description: "El 95% de las peticiones de creación de eventos supera los 500ms en staging" 

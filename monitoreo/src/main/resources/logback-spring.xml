@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    
+    <!-- Propiedades -->
+    <springProfile name="!production">
+        <property name="LOG_LEVEL" value="DEBUG"/>
+    </springProfile>
+    
+    <springProfile name="production">
+        <property name="LOG_LEVEL" value="WARN"/>
+    </springProfile>
+    
+    <!-- Appender para consola -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <!-- Timestamp -->
+                <timestamp/>
+                
+                <!-- Log level -->
+                <logLevel/>
+                
+                <!-- Logger name -->
+                <loggerName/>
+                
+                <!-- Thread name -->
+                <threadName/>
+                
+                <!-- Message -->
+                <message/>
+                
+                <!-- Stack trace -->
+                <stackTrace/>
+                
+                <!-- MDC (incluye correlation-id) -->
+                <mdc/>
+                
+                <!-- Context -->
+                <context/>
+                
+                <!-- Logstash Markers -->
+                <logstashMarkers/>
+                
+                <!-- Pattern -->
+                <pattern>
+                    <pattern>
+                        {
+                            "timestamp": "%d{ISO8601}",
+                            "level": "%level",
+                            "logger": "%logger{36}",
+                            "thread": "%thread",
+                            "message": "%msg",
+                            "correlationId": "%X{correlationId:-}",
+                            "requestId": "%X{requestId:-}",
+                            "userId": "%X{userId:-}",
+                            "sessionId": "%X{sessionId:-}",
+                            "method": "%X{method:-}",
+                            "uri": "%X{uri:-}",
+                            "remoteAddr": "%X{remoteAddr:-}",
+                            "userAgent": "%X{userAgent:-}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+    
+    <!-- Appender para archivo de logs general -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/monitoreo.log</file>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <logLevel/>
+                <loggerName/>
+                <threadName/>
+                <message/>
+                <stackTrace/>
+                <mdc/>
+                <context/>
+                <logstashMarkers/>
+                <pattern>
+                    <pattern>
+                        {
+                            "timestamp": "%d{ISO8601}",
+                            "level": "%level",
+                            "logger": "%logger{36}",
+                            "thread": "%thread",
+                            "message": "%msg",
+                            "correlationId": "%X{correlationId:-}",
+                            "requestId": "%X{requestId:-}",
+                            "userId": "%X{userId:-}",
+                            "sessionId": "%X{sessionId:-}",
+                            "method": "%X{method:-}",
+                            "uri": "%X{uri:-}",
+                            "remoteAddr": "%X{remoteAddr:-}",
+                            "userAgent": "%X{userAgent:-}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/monitoreo.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>3GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    <!-- Appender para logs de seguridad -->
+    <appender name="SECURITY_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/security.log</file>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <logLevel/>
+                <loggerName/>
+                <threadName/>
+                <message/>
+                <stackTrace/>
+                <mdc/>
+                <context/>
+                <logstashMarkers/>
+                <pattern>
+                    <pattern>
+                        {
+                            "timestamp": "%d{ISO8601}",
+                            "level": "%level",
+                            "logger": "%logger{36}",
+                            "thread": "%thread",
+                            "message": "%msg",
+                            "correlationId": "%X{correlationId:-}",
+                            "requestId": "%X{requestId:-}",
+                            "userId": "%X{userId:-}",
+                            "sessionId": "%X{sessionId:-}",
+                            "method": "%X{method:-}",
+                            "uri": "%X{uri:-}",
+                            "remoteAddr": "%X{remoteAddr:-}",
+                            "userAgent": "%X{userAgent:-}",
+                            "securityEvent": true
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/security.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>90</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    <!-- Appender para logs de auditoría -->
+    <appender name="AUDIT_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/audit.log</file>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <logLevel/>
+                <loggerName/>
+                <threadName/>
+                <message/>
+                <stackTrace/>
+                <mdc/>
+                <context/>
+                <logstashMarkers/>
+                <pattern>
+                    <pattern>
+                        {
+                            "timestamp": "%d{ISO8601}",
+                            "level": "%level",
+                            "logger": "%logger{36}",
+                            "thread": "%thread",
+                            "message": "%msg",
+                            "correlationId": "%X{correlationId:-}",
+                            "requestId": "%X{requestId:-}",
+                            "userId": "%X{userId:-}",
+                            "sessionId": "%X{sessionId:-}",
+                            "method": "%X{method:-}",
+                            "uri": "%X{uri:-}",
+                            "remoteAddr": "%X{remoteAddr:-}",
+                            "userAgent": "%X{userAgent:-}",
+                            "auditEvent": true
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/audit.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>365</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+    
+    <!-- Logger para logs de seguridad -->
+    <logger name="com.monitoreo.config.SecurityConfig" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="SECURITY_FILE"/>
+    </logger>
+    
+    <!-- Logger para logs de auditoría -->
+    <logger name="com.monitoreo.service.AuditService" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="AUDIT_FILE"/>
+    </logger>
+    
+    <!-- Logger para correlation-id -->
+    <logger name="com.monitoreo.config.CorrelationIdFilter" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+    
+    <logger name="com.monitoreo.config.CorrelationIdInterceptor" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+    
+    <!-- Logger raíz -->
+    <root level="${LOG_LEVEL}">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+    
+</configuration>

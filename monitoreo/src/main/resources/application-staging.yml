@@ -1,0 +1,90 @@
+spring:
+  application:
+    name: monitoreo-staging
+
+# Configuración de la base de datos PostgreSQL para staging
+datasource:
+  url: jdbc:postgresql://localhost:5432/monitoreo_staging_db
+  username: postgres
+  password: postgres
+  driver-class-name: org.postgresql.Driver
+
+# Configuración de JPA/Hibernate para staging
+jpa:
+  hibernate:
+    ddl-auto: validate  # Solo validar esquema en staging
+  show-sql: false       # No mostrar SQL en staging
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: false
+      jdbc:
+        batch_size: 20
+      order_inserts: true
+      order_updates: true
+  open-in-view: false
+
+# Configuración de Actuator para staging
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized  # Solo mostrar detalles a usuarios autorizados
+      show-components: when-authorized
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    tags:
+      application: ${spring.application.name}
+      environment: staging
+      version: ${app.version:1.0.0}
+  info:
+    env:
+      enabled: true
+    git:
+      mode: full
+    build:
+      enabled: true
+
+# Configuración de logging para staging
+logging:
+  level:
+    com.monitoreo: INFO
+    org.springframework.boot.actuate: WARN
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+  file:
+    name: logs/monitoreo-staging.log
+    max-size: 100MB
+    max-history: 30
+
+# Configuración del servidor para staging
+server:
+  port: 8080
+  servlet:
+    context-path: /
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+
+# Configuración de seguridad para staging
+spring:
+  security:
+    user:
+      name: ${STAGING_USER:admin}
+      password: ${STAGING_PASSWORD:admin123}
+    basic:
+      enabled: true 
