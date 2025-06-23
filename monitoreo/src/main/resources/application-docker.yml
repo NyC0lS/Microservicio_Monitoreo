@@ -2,9 +2,9 @@ spring:
   application:
     name: monitoreo
 
-# Configuración de la base de datos PostgreSQL
+# Configuración de la base de datos PostgreSQL para Docker
 datasource:
-  url: jdbc:postgresql://localhost:5432/monitoreo_db
+  url: jdbc:postgresql://db_monitoreo:5432/monitoreo_db
   username: postgres
   password: postgres
   driver-class-name: org.postgresql.Driver
@@ -41,11 +41,15 @@ management:
       enabled: true
   metrics:
     export:
-      prometheus:
-        enabled: true
+      # prometheus:
+      #   enabled: true
     tags:
       application: ${spring.application.name}
-      environment: development
+      environment: docker
+  prometheus:
+    metrics:
+      export:
+        enabled: true
   info:
     env:
       enabled: true
@@ -62,6 +66,8 @@ logging:
     org.springframework.security: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.netflix.discovery: DEBUG
+    org.springframework.cloud.netflix.eureka: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
 

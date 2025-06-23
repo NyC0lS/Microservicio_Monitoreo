@@ -1,11 +1,19 @@
-# Usar imagen base de OpenJDK 21
-FROM openjdk:21-jdk-slim
-
-# Establecer directorio de trabajo
+# Etapa 1: compilar el jar
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copiar el archivo JAR del proyecto
-COPY target/*.jar app.jar
+# Copiar todo el proyecto
+COPY . .
+
+# Compilar la aplicación
+RUN mvn clean package -DskipTests
+
+# Etapa 2: empaquetar la app
+FROM openjdk:21-jdk-slim
+WORKDIR /app
+
+# Copiar el JAR generado
+COPY --from=build /app/target/*.jar app.jar
 
 # Crear directorio para logs
 RUN mkdir -p /var/log/monitoreo

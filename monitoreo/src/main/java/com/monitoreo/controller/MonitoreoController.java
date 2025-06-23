@@ -72,7 +72,7 @@ public class MonitoreoController {
     /**
      * Registra un nuevo evento de monitoreo
      */
-    @PostMapping("/eventos")
+    @PostMapping("/eventos-basicos")
     public ResponseEntity<EventoMonitoreo> registrarEvento(@RequestBody EventoMonitoreo evento) {
         logger.info("Registrando nuevo evento: {}", evento.getEventType());
         
@@ -109,7 +109,7 @@ public class MonitoreoController {
     /**
      * Obtiene eventos por tipo
      */
-    @GetMapping("/eventos/tipo/{eventType}")
+    @GetMapping("/eventos-basicos/tipo/{eventType}")
     public ResponseEntity<List<EventoMonitoreo>> obtenerEventosPorTipo(@PathVariable String eventType) {
         logger.info("Obteniendo eventos por tipo: {}", eventType);
         List<EventoMonitoreo> eventos = eventoRepository.findByEventType(eventType);
@@ -119,7 +119,7 @@ public class MonitoreoController {
     /**
      * Obtiene eventos por nivel
      */
-    @GetMapping("/eventos/nivel/{level}")
+    @GetMapping("/eventos-basicos/nivel/{level}")
     public ResponseEntity<List<EventoMonitoreo>> obtenerEventosPorNivel(@PathVariable String level) {
         logger.info("Obteniendo eventos por nivel: {}", level);
         List<EventoMonitoreo> eventos = eventoRepository.findByLevel(level);
@@ -129,7 +129,7 @@ public class MonitoreoController {
     /**
      * Obtiene un evento por ID
      */
-    @GetMapping("/eventos/{id}")
+    @GetMapping("/eventos-basicos/{id}")
     public ResponseEntity<EventoMonitoreo> obtenerEventoPorId(@PathVariable Long id) {
         logger.info("Obteniendo evento por ID: {}", id);
         return eventoRepository.findById(id)
@@ -140,7 +140,7 @@ public class MonitoreoController {
     /**
      * Obtiene estadísticas de eventos
      */
-    @GetMapping("/eventos/estadisticas")
+    @GetMapping("/eventos-basicos/estadisticas")
     public ResponseEntity<Map<String, Object>> obtenerEstadisticas() {
         logger.info("Obteniendo estadísticas de eventos");
         
@@ -157,7 +157,7 @@ public class MonitoreoController {
     /**
      * Elimina un evento por ID
      */
-    @DeleteMapping("/eventos/{id}")
+    @DeleteMapping("/eventos-basicos/{id}")
     public ResponseEntity<Void> eliminarEvento(@PathVariable Long id) {
         logger.info("Eliminando evento con ID: {}", id);
         

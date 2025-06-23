@@ -1,12 +1,6 @@
 -- Script de inicialización de la base de datos para el microservicio de monitoreo
 -- Base de datos: monitoreo_db
 
--- Crear la base de datos si no existe
-CREATE DATABASE IF NOT EXISTS monitoreo_db;
-
--- Conectar a la base de datos
-\c monitoreo_db;
-
 -- Crear extensiones necesarias
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pg_trgm";
