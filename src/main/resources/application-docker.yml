@@ -2,6 +2,19 @@ spring:
   application:
     name: monitoreo
 
+# Configuración de Jackson para serialización JSON
+  jackson:
+    default-property-inclusion: NON_NULL
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+    deserialization:
+      fail-on-unknown-properties: false
+    mapper:
+      default-view-inclusion: true
+    time-zone: UTC
+    date-format: yyyy-MM-dd HH:mm:ss
+
 # Configuración de la base de datos PostgreSQL para Docker
 datasource:
   url: jdbc:postgresql://db_monitoreo:5432/monitoreo_db
@@ -76,6 +89,10 @@ server:
   port: 8080
   servlet:
     context-path: / 
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 # Configuración de Eureka
 eureka:

@@ -7,6 +7,7 @@ COPY . .
 
 # Compilar la aplicación
 RUN mvn clean package -DskipTests
+RUN ls -l /app/target/
 
 # Etapa 2: empaquetar la app
 FROM openjdk:21-jdk-slim

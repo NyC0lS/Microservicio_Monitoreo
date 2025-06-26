@@ -2,6 +2,8 @@ package com.monitoreo.model;
 
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EventoMonitoreoTest {
@@ -15,7 +17,8 @@ class EventoMonitoreoTest {
     @Test
     void testAllArgsConstructor() {
         LocalDateTime now = LocalDateTime.now();
-        EventoMonitoreo evento = new EventoMonitoreo(1L, "TEST_EVENT", "Test message", now, "test-service", "INFO", "{}", "user1", "session1");
+        Map<String, Object> metadata = new HashMap<>();
+        EventoMonitoreo evento = new EventoMonitoreo(1L, "TEST_EVENT", "Test message", now, "test-service", "INFO", metadata, "user1", "session1");
         
         assertEquals(1L, evento.getId());
         assertEquals("TEST_EVENT", evento.getEventType());
@@ -23,7 +26,7 @@ class EventoMonitoreoTest {
         assertEquals(now, evento.getTimestamp());
         assertEquals("test-service", evento.getServiceName());
         assertEquals("INFO", evento.getLevel());
-        assertEquals("{}", evento.getMetadata());
+        assertEquals(metadata, evento.getMetadata());
         assertEquals("user1", evento.getUserId());
         assertEquals("session1", evento.getSessionId());
     }
@@ -44,6 +47,8 @@ class EventoMonitoreoTest {
     void testGettersAndSetters() {
         EventoMonitoreo evento = new EventoMonitoreo();
         LocalDateTime now = LocalDateTime.now();
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("key", "value");
 
         evento.setId(2L);
         evento.setEventType("SETTER_EVENT");
@@ -51,7 +56,7 @@ class EventoMonitoreoTest {
         evento.setTimestamp(now);
         evento.setServiceName("setter-service");
         evento.setLevel("ERROR");
-        evento.setMetadata("{\"key\":\"value\"}");
+        evento.setMetadata(metadata);
         evento.setUserId("user2");
         evento.setSessionId("session2");
 
@@ -61,7 +66,7 @@ class EventoMonitoreoTest {
         assertEquals(now, evento.getTimestamp());
         assertEquals("setter-service", evento.getServiceName());
         assertEquals("ERROR", evento.getLevel());
-        assertEquals("{\"key\":\"value\"}", evento.getMetadata());
+        assertEquals(metadata, evento.getMetadata());
         assertEquals("user2", evento.getUserId());
         assertEquals("session2", evento.getSessionId());
     }
@@ -70,10 +75,11 @@ class EventoMonitoreoTest {
     void testAddMetadata() {
         EventoMonitoreo evento = new EventoMonitoreo();
         evento.addMetadata("key1", "value1");
-        assertEquals("key1:value1;", evento.getMetadata());
+        assertEquals("value1", evento.getMetadata().get("key1"));
         
         evento.addMetadata("key2", 123);
-        assertEquals("key1:value1;key2:123;", evento.getMetadata());
+        assertEquals("value1", evento.getMetadata().get("key1"));
+        assertEquals(123, evento.getMetadata().get("key2"));
     }
     
     @Test

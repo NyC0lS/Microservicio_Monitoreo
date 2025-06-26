@@ -17,7 +17,7 @@ import java.util.Map;
  * Controlador para exponer métricas personalizadas y estadísticas del sistema
  */
 @RestController
-@RequestMapping("/api/metrics")
+@RequestMapping("/metrics")
 @CrossOrigin(origins = "*")
 public class MetricsController {
 

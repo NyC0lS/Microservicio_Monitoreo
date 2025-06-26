@@ -84,9 +84,9 @@ public class EventoMonitoreoController {
             evento.setSessionId(request.getSessionId());
             
             if (request.getMetadata() != null) {
-                evento.setMetadata(objectMapper.writeValueAsString(request.getMetadata()));
+                evento.setMetadata(request.getMetadata());
             } else {
-                evento.setMetadata(null);
+                evento.setMetadata(new HashMap<>());
             }
             
             EventoMonitoreo eventoGuardado = eventoMonitoreoRepository.save(evento);
@@ -158,9 +158,9 @@ public class EventoMonitoreoController {
                     evento.setSessionId(request.getSessionId());
                     try {
                         if (request.getMetadata() != null) {
-                            evento.setMetadata(objectMapper.writeValueAsString(request.getMetadata()));
+                            evento.setMetadata(request.getMetadata());
                         } else {
-                            evento.setMetadata(null);
+                            evento.setMetadata(new HashMap<>());
                         }
                     } catch (Exception ex) {
                         throw new RuntimeException("Error al serializar metadata", ex);
@@ -516,7 +516,9 @@ public class EventoMonitoreoController {
                 evento.setLevel((String) actualizaciones.get("level"));
             }
             if (actualizaciones.containsKey("metadata")) {
-                evento.setMetadata((String) actualizaciones.get("metadata"));
+                @SuppressWarnings("unchecked")
+                Map<String, Object> metadata = (Map<String, Object>) actualizaciones.get("metadata");
+                evento.setMetadata(metadata);
             }
             
             EventoMonitoreo eventoActualizado = eventoMonitoreoRepository.save(evento);

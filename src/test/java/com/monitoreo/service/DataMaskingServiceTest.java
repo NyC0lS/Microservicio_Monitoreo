@@ -39,21 +39,20 @@ class DataMaskingServiceTest {
         evento.setMessage("Credit card: 1234-5678-9012-3456");
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("account", "987654321");
-        String metadataString = objectMapper.writeValueAsString(metadata);
-        evento.setMetadata(metadataString);
+        evento.setMetadata(metadata);
 
         when(sensitiveDataFilter.maskUserId(anyString())).thenReturn("12***");
         when(sensitiveDataFilter.containsSensitiveData(evento.getMessage())).thenReturn(true);
         when(sensitiveDataFilter.maskSensitiveData(evento.getMessage())).thenReturn("Credit card: ****");
-        when(sensitiveDataFilter.containsSensitiveData(evento.getMetadata())).thenReturn(true);
-        when(sensitiveDataFilter.maskSensitiveData(evento.getMetadata())).thenReturn("masked_metadata");
-
+        when(sensitiveDataFilter.containsSensitiveData("987654321")).thenReturn(true);
+        when(sensitiveDataFilter.maskSensitiveData("987654321")).thenReturn("*****");
 
         EventoMonitoreo maskedEvento = dataMaskingService.maskEventoMonitoreo(evento);
 
         assertEquals("12***", maskedEvento.getUserId());
         assertEquals("Credit card: ****", maskedEvento.getMessage());
-        assertEquals("masked_metadata", maskedEvento.getMetadata());
+        assertNotNull(maskedEvento.getMetadata());
+        assertEquals("*****", maskedEvento.getMetadata().get("account"));
         verify(metricsService, times(2)).incrementarDatosSensiblesDetectados();
         verify(metricsService, times(2)).incrementarDatosEnmascarados();
     }

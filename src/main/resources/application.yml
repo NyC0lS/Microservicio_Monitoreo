@@ -4,7 +4,7 @@ spring:
 
 # Configuración de la base de datos PostgreSQL
 datasource:
-  url: jdbc:postgresql://localhost:5432/monitoreo_db
+  url: jdbc:postgresql://db_monitoreo:5432/monitoreo_db
   username: postgres
   password: postgres
   driver-class-name: org.postgresql.Driver

@@ -22,7 +22,7 @@ import java.util.Map;
  * Controlador principal para el microservicio de monitoreo
  */
 @RestController
-@RequestMapping("/api/monitoreo")
+@RequestMapping("/monitoreo")
 @CrossOrigin(origins = "*")
 public class MonitoreoController {
 

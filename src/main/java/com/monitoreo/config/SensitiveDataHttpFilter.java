@@ -174,10 +174,12 @@ public class SensitiveDataHttpFilter implements Filter {
         
         private final SensitiveDataFilter filter;
         private final StringBuilder responseBody = new StringBuilder();
+        private final HttpServletResponse originalResponse;
         
         public SensitiveDataResponseWrapper(HttpServletResponse response, SensitiveDataFilter filter) {
             super(response);
             this.filter = filter;
+            this.originalResponse = response;
         }
         
         @Override
@@ -186,6 +188,7 @@ public class SensitiveDataHttpFilter implements Filter {
                 @Override
                 public void write(int b) throws IOException {
                     responseBody.append((char) b);
+                    originalResponse.getOutputStream().write(b);
                 }
                 
                 @Override

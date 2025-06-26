@@ -107,8 +107,13 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
      * Extrae el user-id del header o de la sesión
      */
     private String extractUserId(HttpServletRequest request) {
-        // Intentar obtener del header primero
+        // Intentar obtener del header X-User-ID primero
         String userId = request.getHeader("X-User-ID");
+        
+        // Si no está, intentar obtener del header user-id (que envía el Gateway)
+        if (userId == null || userId.trim().isEmpty()) {
+            userId = request.getHeader("user-id");
+        }
         
         if (userId == null || userId.trim().isEmpty()) {
             // Intentar obtener de la sesión

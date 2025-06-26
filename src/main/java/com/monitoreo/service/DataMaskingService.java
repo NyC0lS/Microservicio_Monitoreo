@@ -58,8 +58,8 @@ public class DataMaskingService {
         }
         
         // Enmascarar metadata si contiene datos sensibles
-        if (evento.getMetadata() != null && sensitiveDataFilter.containsSensitiveData(evento.getMetadata())) {
-            maskedEvento.setMetadata(sensitiveDataFilter.maskSensitiveData(evento.getMetadata()));
+        if (evento.getMetadata() != null && containsSensitiveData(evento.getMetadata())) {
+            maskedEvento.setMetadata(maskMetadataMap(evento.getMetadata()));
             metricsService.incrementarDatosSensiblesDetectados();
             metricsService.incrementarDatosEnmascarados();
         } else {
@@ -114,6 +114,30 @@ public class DataMaskingService {
             // Enmascarar valores sensibles
             if (sensitiveDataFilter.containsSensitiveData(value)) {
                 maskedMetadata.put(key, sensitiveDataFilter.maskSensitiveData(value));
+            } else {
+                maskedMetadata.put(key, value);
+            }
+        }
+        
+        return maskedMetadata;
+    }
+    
+    /**
+     * Enmascara un mapa de metadatos con valores Object
+     */
+    public Map<String, Object> maskMetadataMap(Map<String, Object> metadata) {
+        if (metadata == null) {
+            return null;
+        }
+        
+        Map<String, Object> maskedMetadata = new HashMap<>();
+        for (Map.Entry<String, Object> entry : metadata.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            
+            // Enmascarar valores sensibles
+            if (value instanceof String && sensitiveDataFilter.containsSensitiveData((String) value)) {
+                maskedMetadata.put(key, sensitiveDataFilter.maskSensitiveData((String) value));
             } else {
                 maskedMetadata.put(key, value);
             }

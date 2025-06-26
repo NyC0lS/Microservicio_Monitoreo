@@ -7,7 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.MapSerializer;
+import com.fasterxml.jackson.databind.deser.std.MapDeserializer;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -46,7 +52,9 @@ public class EventoMonitoreo {
     private String level;
     
     @Column(name = "metadata", columnDefinition = "jsonb")
-    private String metadata; // JSON como string para PostgreSQL
+    @JdbcTypeCode(SqlTypes.JSON)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Map<String, Object> metadata = new HashMap<>();
     
     @Column(name = "user_id", length = 100)
     private String userId;
@@ -68,12 +76,10 @@ public class EventoMonitoreo {
 
     // Métodos de utilidad para metadata
     public void addMetadata(String key, Object value) {
-        // Aquí se podría implementar la conversión a JSON
-        // Por simplicidad, usamos un string simple
         if (this.metadata == null) {
-            this.metadata = "";
+            this.metadata = new HashMap<>();
         }
-        this.metadata += key + ":" + value + ";";
+        this.metadata.put(key, value);
     }
 
     @Override

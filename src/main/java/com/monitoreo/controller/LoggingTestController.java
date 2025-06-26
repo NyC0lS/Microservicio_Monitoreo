@@ -14,7 +14,7 @@ import java.util.Map;
  * Controlador de prueba para demostrar logging estructurado en JSON
  */
 @RestController
-@RequestMapping("/api/test/logging")
+@RequestMapping({"/api/test/logging", "/test/logging"})
 @CrossOrigin(origins = "*")
 public class LoggingTestController {
 
